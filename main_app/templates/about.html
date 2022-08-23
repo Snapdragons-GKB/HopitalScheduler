@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>About our Providers</h1>
+
+{% for provider in Providers %}
+<div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ provider.first_name }}{{ provider.last_name }}</span>
+            <p>Specialty: {{ provider.provider_specialization }}</p>
+            <p>About Dr. {{ provider.last_name }}: {{ provider.personal_blurb }}</p>
+        </div>
+    </a>
+</div>
+{% endfor %} {% endblock %}
