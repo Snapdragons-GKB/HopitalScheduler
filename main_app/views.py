@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic.base import TemplateView
 from django.http import HttpResponse
-# from .models import PatientRequest, Patient, Provider, Scheduler
+from .models import PatientRequest, Patient, Provider, Scheduler
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
@@ -11,13 +11,16 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 # Create your views here.
 
-@method_decorator(login_required, name='dispatch')
-
+# @method_decorator(login_required, name='dispatch')
 def Home(request):
-  return render(request, 'home.html')
+    #return render(request, '../main_app/templates/home.html')
+    return render(request, 'home.html')
+
+def About(request):
+    return render(request, 'about.html')
 
 def Patient_Request(request):
-  return render(request, 'about.html')
+    return render(request, 'about.html')
 
 def Patient_Details(request):
     # patient = Patient.Patient_id.objects.all()
