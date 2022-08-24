@@ -21,14 +21,14 @@ class Patient(models.Model):
         MEDICARE = 2, 'Medicare'
         PRIVATE = 3, 'Private'
 
-    patientID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientpersonal')
+
     birth_date = models.DateField(null=True, blank=True)
     patient_insurance_type = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
     patient_preexisting_conditions = models.TextField(max_length=80)
     patient_current_medications = models.TextField(max_length=80)
 
 class Scheduler(models.Model):
-    schedulerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='schedulerpersonal')
+    schedulerfavoritefood = models.TextField(max_length=20)
 
 class Provider(models.Model):
     class insurance(models.TextChoices):
@@ -50,7 +50,6 @@ class Provider(models.Model):
         SURGICAL = 9, 'Surgical'
         OTHER = 10, 'Other'
 
-    providerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='providerpersonal')
     personal_blurb = models.CharField(max_length=200)
     provider_specialization = models.CharField(max_length=20, choices=specialty.choices, default=specialty.NONE)
     insurances_taken = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
