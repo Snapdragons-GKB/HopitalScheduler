@@ -1,6 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_patient = models.BooleanField(default=False)
+    is_scheduler = models.BooleanField(default=False)
+    is_provider = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'User Profile'
+        verbose_name_plural = 'User Profiles'
+
+
 class Patient(models.Model):
     class insurance(models.TextChoices):
         NONE = 0, 'Without Insurance'
@@ -8,9 +21,8 @@ class Patient(models.Model):
         MEDICARE = 2, 'Medicare'
         PRIVATE = 3, 'Private'
 
-    
     patientID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientpersonal')
-    patient_age = models.IntegerField()
+    birth_date = models.DateField(null=True, blank=True)
     patient_insurance_type = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
     patient_preexisting_conditions = models.TextField(max_length=80)
     patient_current_medications = models.TextField(max_length=80)
