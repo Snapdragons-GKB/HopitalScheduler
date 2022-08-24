@@ -5,21 +5,40 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+    <!-- <link rel="stylesheet" href="{% static 'main_app/styles/style.css' %}" /> -->
+    <script src="{% static 'main_app/scripts/script.js' %}" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>GKB Hospital</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    
 </head>
 <body>
-    <header class="navbar-fixed">
-        <nav>
-            <div class="nav-wrapper">
-                <ul>
-                    <li><a href="{% url 'home' %}" class="left brand-logo">&nbsp;&nbsp;Home</a></li>
-                </ul>
-                <ul class="right">
-                    <li><a href="{% url 'about' %}">Meet Our Providers</a></li>
-                </ul>
+        <nav class="navbar is-black" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">Hopital Scheduler</a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
+            <div class="navbar-menu navbar-start">
+
+               
+            </div>
+            <div class="navbar-menu navbar-end">
+                <a class="navbar-item" href="{% url 'home' %}">Home</a>
+                <a class="navbar-item" href="{% url 'about' %}">About</a>
+                <a class="navbar-item" href="{% url 'patient_detail' %}">Patient Detail</a>
+                <a class="navbar-item" href="{% url 'patient_request' %}">Patient Request</a>
+            </div>
+                <!-- <ul class="navbar-menu navbar-end">
+                    <li><a class="navbar-item" href="{% url 'home' %}">&nbsp;&nbsp;Home</a></li>
+                    <li><a  class="navbar-item" href="{% url 'about' %}">Meet Our Providers</a></li>
+                    <li><a  class="navbar-item" href="{% url 'patient_detail' %}">Patient Details</a></li>
+                    <li><a  class="navbar-item" href="{% url 'patient_request' %}">Patient Request</a></li>
+                </ul> -->
         </nav>
     </header>
     <main class="container">{% block content %} {% endblock %}</main>
