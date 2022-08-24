@@ -7,47 +7,42 @@ import uuid
 
 # Create your models here.
 
-#Can we extend the basic signin formula, as in extending "useraccount" class?
-#See https://stackoverflow.com/questions/16925129/generate-unique-id-in-django-from-a-model-field
-#interesting that emailfield exists, nice
-#Do we need to do anything to obfuscate password details? Feels like we do
-
 # insurance_tiers = [(0,"Person without Insurance"),(1,"Medicaid"),(2,"Medicare"),(3,"Private Insurer")]
 # ailment_categories = [('GP', "General Practice"), ('OS', "Orthopedic"), ('NS', "Neurosurgery"),('ER', "Emergency")]
 # treatment_status = [(0, "Awaiting response"), (1, "Scheduled for treatment"), (2, "Denied treatment"), (3, "Treatment completed")]
 
 class Patient(models.Model):
     patientID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # email = models.EmailField()
-    # username = models.CharField(min_length = 8)
-    # password = models.CharField(min_length = 8)
-    # first_name = models.CharField(max_length=50)
-    # second_name = models.CharField(max_length=50)
-    # age = models.IntegerField(max=100)
-    # insurance_type = models.TextChoices(insurance_tiers) # unsure if I can have this in global state, might not work
-    # preexisting_conditions = models.TextField(max_length=80)
-    # current_medications = models.TextField(max_length=80)
+    email = models.EmailField()
+    username = models.CharField(max_length = 8)
+    password = models.CharField(max_length = 8)
+    first_name = models.CharField(max_length=50)
+    second_name = models.CharField(max_length=50)
+    age = models.IntegerField()
+    #insurance_type = models.TextChoices(max_length =4, choices=((0,"Person without Insurance"),(1,"Medicaid"),(2,"Medicare"),(3,"Private Insurer")),default=0) 
+    preexisting_conditions = models.TextField(max_length=80)
+    current_medications = models.TextField(max_length=80)
 
 
 class Scheduler(models.Model):
     schedulerID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # email = models.EmailField() #interesting that this exists, nice
-    # username = models.CharField(min_length = 8) #note restriction here
-    # password = models.Password(min_length = 8)
-    # first_name = models.CharField(max_length=50)
-    # second_name = models.CharField(max_length=50)
+    email = models.EmailField() #interesting that this exists, nice
+    username = models.CharField(max_length = 8) #note restriction here
+    password = models.CharField(max_length = 8)
+    first_name = models.CharField(max_length=50)
+    second_name = models.CharField(max_length=50)
 
 
 class Provider(models.Model):
     providerID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    # email = models.EmailField() #interesting that this exists, nice
-    # username = models.CharField(min_length = 8) #note restriction here
-    # password = models.Password(min_length = 8)
-    # first_name = models.CharField(max_length=50)
-    # second_name = models.CharField(max_length=50)
-    # personal_blurb = models.CharField(max_length=200) #lord knows they love to talk about themself
-    # provider_specialization = models.TextChoices(ailment_categories)
-    # insurances_taken = models.TextChoices(insurance_tiers)
+    email = models.EmailField() #interesting that this exists, nice
+    username = models.CharField(max_length = 8) #note restriction here
+    password = models.CharField(max_length = 8)
+    first_name = models.CharField(max_length=50)
+    second_name = models.CharField(max_length=50)
+    personal_blurb = models.CharField(max_length=200) #lord knows they love to talk about themself
+    #provider_specialization = models.TextChoices(ailment_categories)
+    #insurances_taken = models.TextChoices(insurance_tiers)
 
 
 
