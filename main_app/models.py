@@ -1,74 +1,79 @@
 from django.db import models
-import uuid
-#from multiselectfield import MultiSelectField #pip3 install django-multiselectfield
-#above not necessary, but will keep this here as a bookmark if we need it later
-
-
-
-# Create your models here.
-
-# insurance_tiers = [(0,"Person without Insurance"),(1,"Medicaid"),(2,"Medicare"),(3,"Private Insurer")]
-# ailment_categories = [('GP', "General Practice"), ('OS', "Orthopedic"), ('NS', "Neurosurgery"),('ER', "Emergency")]
-# treatment_status = [(0, "Awaiting response"), (1, "Scheduled for treatment"), (2, "Denied treatment"), (3, "Treatment completed")]
+from django.contrib.auth.models import User
 
 class Patient(models.Model):
-    patientID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField()
-    username = models.CharField(max_length = 8)
-    password = models.CharField(max_length = 8)
-    first_name = models.CharField(max_length=50)
-    second_name = models.CharField(max_length=50)
-    age = models.IntegerField()
-    #insurance_type = models.TextChoices(max_length =4, choices=((0,"Person without Insurance"),(1,"Medicaid"),(2,"Medicare"),(3,"Private Insurer")),default=0) 
-    preexisting_conditions = models.TextField(max_length=80)
-    current_medications = models.TextField(max_length=80)
+    class insurance(models.TextChoices):
+        NONE = 0, 'Without Insurance'
+        MEDICAID = 1, 'Medicaid'
+        MEDICARE = 2, 'Medicare'
+        PRIVATE = 3, 'Private'
 
+    
+    patientID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientpersonal')
+    patient_age = models.IntegerField()
+    patient_insurance_type = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
+    patient_preexisting_conditions = models.TextField(max_length=80)
+    patient_current_medications = models.TextField(max_length=80)
 
 class Scheduler(models.Model):
-    schedulerID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField() #interesting that this exists, nice
-    username = models.CharField(max_length = 8) #note restriction here
-    password = models.CharField(max_length = 8)
-    first_name = models.CharField(max_length=50)
-    second_name = models.CharField(max_length=50)
-
+    schedulerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='schedulerpersonal')
 
 class Provider(models.Model):
-    providerID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField() #interesting that this exists, nice
-    username = models.CharField(max_length = 8) #note restriction here
-    password = models.CharField(max_length = 8)
-    first_name = models.CharField(max_length=50)
-    second_name = models.CharField(max_length=50)
-    personal_blurb = models.CharField(max_length=200) #lord knows they love to talk about themself
-    #provider_specialization = models.TextChoices(ailment_categories)
-    #insurances_taken = models.TextChoices(insurance_tiers)
+    class insurance(models.TextChoices):
+        NONE = 0, 'Without Insurance'
+        MEDICAID = 1, 'Medicaid'
+        MEDICARE = 2, 'Medicare'
+        PRIVATE = 3, 'Private'
 
+    class specialty(models.TextChoices):
+        NONE = 0, 'None'
+        CARDIOLOGY = 1, 'Cardiology'
+        NEUROLOGY = 2, 'Neurology'
+        PEDIATRICS = 3, 'Pediatrics'
+        SURGERY = 4, 'Surgery'
+        DENTAL = 5, 'Dental'
+        GENERAL_MEDICINE = 6, 'General Medicine'
+        PSYCHIATRY = 7, 'Psychiatry'
+        RADIOLOGY = 8, 'Radiology'
+        SURGICAL = 9, 'Surgical'
+        OTHER = 10, 'Other'
 
+    providerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='providerpersonal')
+    personal_blurb = models.CharField(max_length=200)
+    provider_specialization = models.CharField(max_length=20, choices=specialty.choices, default=specialty.NONE)
+    insurances_taken = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
 
-#Now we have these three "person" classes, the below is the assembly line which they all have a part in (if full procedure scheduled)
 
 class PatientRequest(models.Model):
-    treatment_status = [(0, "Awaiting response"), (1, "Scheduled for treatment"), (2, "Denied treatment"), (3, "Treatment completed")]
-    ailment_categories = [('GP', "General Practice"), ('OS', "Orthopedic"), ('NS', "Neurosurgery"),('ER', "Emergency")]
-
-    #maybe most important part, indicates what stage request is at
-    request_status = models.SmallIntegerField()
-    #patient creates request, furnishes this data. After submission, request_status is awaiting response
-    patientID = models.CharField(max_length=8) #we stamp this on every request
-    ailment_category = models.SmallIntegerField()
-    ailment_description = models.TextField()
-    preferred_date_range = models.IntegerField()
+    class request_status(models.TextChoices):
+        PENDING = 0, 'Awating Response'
+        ACCEPTED = 1, 'Accepted'
+        REJECTED = 2, 'Rejected'
+        CANCELLED = 3, 'Cancelled'
+        COMPLETED = 4, 'Completed'
     
-    #passes to scheduler, scheduler chooses schedule and doctor, can comment - request_status then either scheduled for treatment or denied treatment
-    schedulerID = models.CharField(max_length=8) #filled in on either approval or denial, but not until then
-    procedure_date = models.TextField()
-    doctorID = models.CharField(max_length=8) #stamped on every scheduled approved procedure
-    scheduling_comment = models.TextField() #if scheduler had denied and provides a reason (or accepted and wants to for some reason)
-    #note, post-mvp can bounce back to patient for approval of surgeon
+    class ailment_category(models.TextChoices):
+        NONE = 0, 'None'
+        CARDIOLOGY = 1, 'Cardiology'
+        NEUROLOGY = 2, 'Neurology'
+        PEDIATRICS = 3, 'Pediatrics'
+        SURGERY = 4, 'Surgery'
+        DENTAL = 5, 'Dental'
+        GENERAL_MEDICINE = 6, 'General Medicine'
+        PSYCHIATRY = 7, 'Psychiatry'
+        RADIOLOGY = 8, 'Radiology'
+        SURGICAL = 9, 'Surgical'
+        OTHER = 10, 'Other'
 
-    #doctor's sole functionality is commenting on operation. Not sure if doctor should mark completed or if we just have it change automatically after "operation date"
+
+    request_status = models.CharField(max_length=20, choices=request_status.choices, default=request_status.PENDING)
+    patientID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patient')
+    ailment_category = models.CharField(max_length=20, choices=ailment_category.choices, default=ailment_category.NONE)
+    ailment_description = models.CharField(max_length=80)
+    preferred_date_range = models.DateField()
+    schedulerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='scheduler')
+    procedure_date = models.DateField()
+    doctorID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='doctor')
+    scheduling_comment = models.TextField()
     doctor_comment_on_operation = models.TextField()
 
-#class TimePassing(models.Model):
-    #currentDay = models.IntegerField(min=1, max=365)
