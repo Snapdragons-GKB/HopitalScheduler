@@ -25,7 +25,7 @@ def Patient_Request(request):
 
 def Patient_Details(request):
     # patient = Patient.Patient_id.objects.all()
-    return render(request, 'patientrequest.html')
+    return render(request, 'details.html')
 
 class Signup(View):
 #for a patient to sign-up for patient portal
