@@ -1,16 +1,14 @@
 body {
-    background-color: #ffffff;
-    color: #ffffff;
+    background-color: #ad0b0b;
+    color: #eb3535;
     min-height: 100vh;
   }
   
   h1,
   h2,
   h3 {
-    color: #ffffff;
+    color: #cf5656;
   }
 
-  .navbar{
-    color: blue;
-  }
+ 
   
