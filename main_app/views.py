@@ -11,7 +11,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 # Create your views here.
 
-#@method_decorator(login_required, name='dispatch')
+ @method_decorator(login_required, name='dispatch')
+ 
 def Home(request):
     #return render(request, '../main_app/templates/home.html')
     return render(request, 'home.html')
@@ -38,7 +39,7 @@ class Signup(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect("home")
+            return redirect('home')
         else:
             context = {"form": form}
             return render(request, "registration/signup.html", context)
