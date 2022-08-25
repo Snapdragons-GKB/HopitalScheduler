@@ -84,6 +84,11 @@ DATABASES = {
 }
 
 
+#Extending the default user model
+AUTH_USER_MODEL = 'main_app.User'
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
