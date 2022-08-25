@@ -1,6 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
+    is_patient = models.BooleanField(default=False)
+    is_scheduler = models.BooleanField(default=False)
+    is_provider = models.BooleanField(default=False)
+
+
 class Patient(models.Model):
     class insurance(models.TextChoices):
         NONE = 0, 'Without Insurance'
@@ -9,14 +17,14 @@ class Patient(models.Model):
         PRIVATE = 3, 'Private'
 
     
-    patientID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientpersonal')
+    patientProfile = models.OneToOneField(Profile, on_delete=models.CASCADE, unique=True)
     patient_age = models.IntegerField()
     patient_insurance_type = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
     patient_preexisting_conditions = models.TextField(max_length=80)
     patient_current_medications = models.TextField(max_length=80)
 
 class Scheduler(models.Model):
-    schedulerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='schedulerpersonal')
+    schedulerProfile = models.OneToOneField(Profile, on_delete=models.CASCADE, unique=True)
 
 class Provider(models.Model):
     class insurance(models.TextChoices):
@@ -38,10 +46,19 @@ class Provider(models.Model):
         SURGICAL = 9, 'Surgical'
         OTHER = 10, 'Other'
 
-    providerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='providerpersonal')
-    personal_blurb = models.CharField(max_length=200)
+    providerProfile = models.OneToOneField(Profile, on_delete=models.CASCADE, unique=True)
+    provider_personal_blurb = models.CharField(max_length=200)
     provider_specialization = models.CharField(max_length=20, choices=specialty.choices, default=specialty.NONE)
-    insurances_taken = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
+    provider_insurances_taken = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
+    day1 = models.BooleanField(default=False)
+    day2 = models.BooleanField(default=False)
+    day3 = models.BooleanField(default=False)
+    day4 = models.BooleanField(default=False)
+    day5 = models.BooleanField(default=False)
+    day6 = models.BooleanField(default=False)
+    day7 = models.BooleanField(default=False)
+
+    
 
 
 class PatientRequest(models.Model):
@@ -49,8 +66,7 @@ class PatientRequest(models.Model):
         PENDING = 0, 'Awating Response'
         ACCEPTED = 1, 'Accepted'
         REJECTED = 2, 'Rejected'
-        CANCELLED = 3, 'Cancelled'
-        COMPLETED = 4, 'Completed'
+        COMPLETED = 3, 'Completed'
     
     class ailment_category(models.TextChoices):
         NONE = 0, 'None'
@@ -67,13 +83,13 @@ class PatientRequest(models.Model):
 
 
     request_status = models.CharField(max_length=20, choices=request_status.choices, default=request_status.PENDING)
-    patientID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patient')
-    ailment_category = models.CharField(max_length=20, choices=ailment_category.choices, default=ailment_category.NONE)
-    ailment_description = models.CharField(max_length=80)
-    preferred_date_range = models.DateField()
-    schedulerID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='scheduler')
-    procedure_date = models.DateField()
-    doctorID = models.ForeignKey(User, on_delete=models.CASCADE, related_name='doctor')
-    scheduling_comment = models.TextField()
-    doctor_comment_on_operation = models.TextField()
+    request_patient_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='patientofrequest')
+    request_ailment_category = models.CharField(max_length=20, choices=ailment_category.choices, default=ailment_category.NONE)
+    request_ailment_description = models.CharField(max_length=80)
+    request_preferred_date_range = models.DateField()
+    request_scheduler_profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='schedulerofrequest')
+    request_procedure_date = models.DateField()
+    request_doctor_profile= models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='doctorofrequest')
+    request_scheduling_comment = models.TextField()
+    request_doctor_comment_on_operation = models.TextField()
 
