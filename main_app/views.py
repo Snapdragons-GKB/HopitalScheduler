@@ -11,11 +11,12 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 # Create your views here.
 
-# @method_decorator(login_required, name='dispatch')
-
+ @method_decorator(login_required, name='dispatch')
+ 
 def Home(request):
     #return render(request, '../main_app/templates/home.html')
     return render(request, 'home.html')
+
 
 def About(request):
     return render(request, 'about.html')
