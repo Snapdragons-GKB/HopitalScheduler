@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
+    userID = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     is_patient = models.BooleanField(default=False)
     is_scheduler = models.BooleanField(default=False)
     is_provider = models.BooleanField(default=False)
