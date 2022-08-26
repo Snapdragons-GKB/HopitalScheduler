@@ -34,13 +34,13 @@ class Signup(View):
         form = UserCreationForm()
         context = {"form": form}
         return render(request, "registration/signup.html", context)
-    def post(self, request):
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-        else:
-            context = {"form": form}
-            return render(request, "registration/signup.html", context)
+    # def post(self, request):
+    #     form = UserCreationForm(request.POST)
+    #     if form.is_valid():
+    #         user = form.save()
+    #         # login(request, user)
+    #         return redirect('home')
+    #     else:
+    #         context = {"form": form}
+    #         return render(request, "registration/signup.html", context)
 

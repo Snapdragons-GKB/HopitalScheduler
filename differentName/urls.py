@@ -21,5 +21,5 @@ urlpatterns = [
     #path routed to look for all uls in main_app
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('main_app.urls')),
-    # path('', include('provider_app.urls') )
+
 ]
