@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Patient Detials</h1>
-<h2>Welcome Patient Name</h2>
+<h1>{{user.username}}'s Details</h1>
+<div class="container">
+    <div class="notification is-primary">
+      <p>Patient Details:</p>
+      <p>{{user.username}}'s Age: {{user.main_app_patient.patient_age}}</p>
+      <p>{{user.username}}'s Insurance_type: {{user.main_app_patient.patient_insurance_type}}</p>
+      <p>{{user.username}}'s Pre-existing Conditions: {{user.main_app_patient.patient_preexisting_conditions}}</p>  
+      <p>{{user.username}}'s Current Medications:{{user.main_app_patient.patient_current_medications}}</p> 
+  </div>
 
 {% endblock %}
