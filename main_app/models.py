@@ -22,14 +22,14 @@ class Patient(models.Model):
         PRIVATE = 3, 'Private'
 
     
-    patientProfile = models.OneToOneField(User, on_delete=models.CASCADE)
+    #patientProfile = models.OneToOneField(User, on_delete=models.CASCADE, default=None, null=True)
     patient_age = models.IntegerField()
     patient_insurance_type = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
     patient_preexisting_conditions = models.TextField(max_length=80)
     patient_current_medications = models.TextField(max_length=80)
 
 class Scheduler(models.Model):
-    schedulerProfile = models.OneToOneField(User, on_delete=models.CASCADE)
+    schedulerProfile = models.TextField(max_length=80)
 
 class Provider(models.Model):
     class insurance(models.TextChoices):
@@ -51,7 +51,7 @@ class Provider(models.Model):
         SURGICAL = 9, 'Surgical'
         OTHER = 10, 'Other'
 
-    providerProfile = models.OneToOneField(User, on_delete=models.CASCADE)
+    #providerProfile = models.OneToOneField(User, on_delete=models.CASCADE)
     provider_personal_blurb = models.CharField(max_length=200)
     provider_specialization = models.CharField(max_length=20, choices=specialty.choices, default=specialty.NONE)
     provider_insurances_taken = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
