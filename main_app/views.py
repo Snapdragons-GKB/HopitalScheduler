@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 # Create your views here.
 
-@login_required
+# @login_required
  
 def Home(request):
     #return render(request, '../main_app/templates/home.html')
