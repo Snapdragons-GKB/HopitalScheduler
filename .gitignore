@@ -1,2 +1,3 @@
 main_app/migrations
 main_app/migrations/__init__.py
+main_app/migrations/001_initial.py
